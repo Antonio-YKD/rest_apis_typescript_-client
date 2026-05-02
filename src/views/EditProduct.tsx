@@ -47,7 +47,6 @@ const EditProduct = () => {
     const product = useLoaderData() as Product
     const error = useActionData();
 
-    console.log(location)
 
     return (
         <>
