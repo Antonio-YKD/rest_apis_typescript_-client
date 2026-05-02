@@ -66,26 +66,27 @@ export async function getProductById(id: Product['id']) {
     }
 }
 
-export async function updateProduct(data : ProductData, id : Product['id']) {
-    try {
+export async function updateProduct(data: ProductData, id: Product['id']) {
+  try {
+    const result = safeParse(ProductSchema, {
+      id,
+      name: data.name,
+      price: Number(data.price),
+      availability: toBoolean(String(data.availability ?? "")) 
+    });
 
-
-        const result = safeParse(ProductSchema, {
-            id,
-            name: data.name,
-            price: +data.price,
-            availability: toBoolean(data.availability.toString())
-        })
-
-        if(result.success){
-             const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`
-             await axios.put(url, result.output)
-        }
-
-    } catch (error) {
-        console.log(error)
+    if (!result.success) {
+      throw new Error('Datos inválidos');
     }
 
+    const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`;
+    const res = await axios.put(url, result.output);
+
+    return res.data; 
+  } catch (error) {
+    console.error(error);
+    throw error; 
+  }
 }
 
 export async function deleteProduct(id : Product['id']){
