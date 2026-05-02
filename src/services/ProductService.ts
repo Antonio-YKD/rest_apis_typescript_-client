@@ -1,4 +1,4 @@
-import { number, safeParse } from "valibot";
+import { safeParse } from "valibot";
 import { DraftProductSchema, ProductsSchema, ProductSchema } from "../types";
 import type { Product } from '../types'
 import axios from "axios";
@@ -77,7 +77,11 @@ export async function updateProduct(data : ProductData, id : Product['id']) {
             availability: toBoolean(data.availability.toString())
         })
 
+        console.log('result : ', result.success)
+        console.log('result : ',result.output)
+
         if(result.success){
+            console.log('Update')
              const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`
              await axios.put(url, result.output)
         }
