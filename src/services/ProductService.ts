@@ -79,7 +79,7 @@ export async function updateProduct(data: ProductData, id: Product['id']) {
             id,
             name: data.name,
             price: parse(NumberSchema, data.price),
-            availability: toBoolean(data.availability.toString())
+            availability:  data.availability === 'true'
         })
 
         if (result.success) {
