@@ -66,7 +66,7 @@ export async function getProductById(id: Product['id']) {
     }
 }
 
-export async function updateProduct(data : ProductData, id : Product['id']) {
+export async function updateProduct(data: ProductData, id: Product['id']) {
     try {
 
 
@@ -74,16 +74,22 @@ export async function updateProduct(data : ProductData, id : Product['id']) {
             id,
             name: data.name,
             price: +data.price,
-            availability: toBoolean(data.availability.toString())
+            availability: data.availability
         })
 
-        console.log('result : ', result.success)
-        console.log('result : ',result.output)
 
-        if(result.success){
+
+        if (!result.success) {
+            console.log(result)
+            console.log('result : ', result.success)
+            console.log('result : ', result.output)
+            return
+        }
+
+        if (result.success) {
             console.log('Update')
-             const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`
-             await axios.put(url, result.output)
+            const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`
+            await axios.put(url, result.output)
         }
 
     } catch (error) {
@@ -92,7 +98,7 @@ export async function updateProduct(data : ProductData, id : Product['id']) {
 
 }
 
-export async function deleteProduct(id : Product['id']){
+export async function deleteProduct(id: Product['id']) {
     try {
         const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`
         await axios.delete(url)
@@ -101,7 +107,7 @@ export async function deleteProduct(id : Product['id']){
     }
 }
 
-export async function updateProductAvailability(id : Product['id']) {
+export async function updateProductAvailability(id: Product['id']) {
     try {
         const url = `${import.meta.env.VITE_API_URL}/api/products/${id}`
         await axios.patch(url)
